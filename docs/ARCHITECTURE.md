@@ -4,7 +4,7 @@
 
 ## 已实现
 
-React + TypeScript + Vite 项目入口；V26 原有代码保存在 public/legacy/index.html。两者目前相互独立，算法尚未迁移。GitHub Actions 构建 dist 并发布 Pages，base 为 /SpinPlot/。不设置独立 CNAME，不改主站域名。
+软件直接位于根 index.html，首次公开版本 0.1.0。Vite 负责构建；TypeScript/React 依赖保留用于后续模块化迁移，算法尚未迁移。public/legacy/index.html 仅保留旧地址跳转。GitHub Actions 构建 dist 并发布 Pages，base 为 /SpinPlot/。不设置独立 CNAME，不改主站域名。
 
 ## 目标模块
 
@@ -25,4 +25,4 @@ React + TypeScript + Vite 项目入口；V26 原有代码保存在 public/legacy
 
 ## 阶段验收
 
-第一阶段核对 V26 支持的文件、主要绘图设置、处理数组、项目保存重载及旧项目报错；覆盖反向轴、缺失频率、缺失信号、非等间隔轴、多文件频率对齐、大数组和已知积分数据。算法允许误差在具体功能开发时定义，不将页面正常显示视为数值验证完成。
+第一阶段核对 现有软件 支持的文件、主要绘图设置、处理数组、项目保存重载及旧项目报错；覆盖反向轴、缺失频率、缺失信号、非等间隔轴、多文件频率对齐、大数组和已知积分数据。算法允许误差在具体功能开发时定义，不将页面正常显示视为数值验证完成。
