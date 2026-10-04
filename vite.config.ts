@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import packageJson from './package.json';
 export default defineConfig({
-  base: '/SpinPlot/',
+  base: '/spinplot/',
   plugins: [{
     name: 'spinplot-version',
     transformIndexHtml(html) {

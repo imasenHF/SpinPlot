@@ -4,7 +4,7 @@
 
 ## 已实现
 
-软件直接位于根 index.html，首次公开版本 0.1.0。Vite 负责构建；TypeScript/React 依赖保留用于后续模块化迁移，算法尚未迁移。public/legacy/index.html 仅保留旧地址跳转。GitHub Actions 构建 dist 并发布 Pages，base 为 /SpinPlot/。不设置独立 CNAME，不改主站域名。
+软件直接位于根 index.html，首次公开版本 0.1.0。Vite 负责构建；TypeScript/React 依赖保留用于后续模块化迁移，算法尚未迁移。public/legacy/index.html 仅保留旧地址跳转。GitHub Actions 构建 dist 并发布 Pages，base 为 /spinplot/。不设置独立 CNAME，不改主站域名。
 
 ## 目标模块
 
