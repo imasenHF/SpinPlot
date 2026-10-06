@@ -89,10 +89,23 @@ button,input,select,textarea,.layout-expression{font-family:var(--ui-font)}
 .neo-statuscell.copyright-cell{position:static;transform:none;width:auto;max-width:none;text-align:left;z-index:auto;box-shadow:inset 1px 1px #7f8384,inset -1px -1px #fff}
 @media(max-width:1100px){.neo-statusbar{grid-template-columns:max-content minmax(0,1fr) 110px 130px}}
 @media(max-width:760px){.neo-statusbar{grid-template-columns:max-content minmax(0,1fr)}}
+
+/* Compact shared site branding; preserve the 31px application titlebar. */
+.titlebar{background:#f5f6f4;color:#203139}
+.spinplot-brand{display:flex;align-items:center;gap:8px;min-width:0;white-space:nowrap}
+.brand-icon-link{display:flex;align-items:center;flex-shrink:0}
+.brand-icon-link img{display:block;width:24px;height:24px;object-fit:contain}
+.spinplot-brand .brand-name{font:17px/24px Georgia,"Times New Roman",serif;color:#203139;text-decoration:none}
+.spinplot-brand .brand-gold{color:#b68c37}
+.brand-divider{font:16px/24px Georgia,serif;color:#6b787d}
+.brand-version{font:11px/20px Arial,sans-serif;color:#6b787d}
+.spinplot-brand .brand-name:is(:hover,:active,:focus-visible){text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.16em;text-decoration-skip-ink:auto}
+.spinplot-brand a:focus-visible{outline:2px solid #b68c37;outline-offset:2px}
+@media(max-width:420px){.spinplot-brand{gap:5px}.spinplot-brand .brand-name{font-size:15px}.brand-version{font-size:10px}.titlebar{padding-left:5px}}
 </style>
 </head>
 <body>
-<header class="titlebar"><div class="app-icon">S</div><div class="app-name">SpinPlot <span style="font-size:11px;font-weight:normal">__SPINPLOT_VERSION__</span></div><div class="window-buttons"><button class="window-button">—</button><button class="window-button">□</button><button class="window-button">×</button></div></header>
+<header class="titlebar"><div class="spinplot-brand"><a class="brand-icon-link" href="https://plastocyanin.org/" aria-label="返回 plastocyanin 主页"><img src="https://plastocyanin.org/assets/images/imasen_phi_logo/imasen-phi-32.png" width="24" height="24" alt=""></a><a class="brand-name" href="https://plastocyanin.org/">plastocyanin<span class="brand-gold">.</span></a><span class="brand-divider" aria-hidden="true">|</span><a class="brand-name" href="./" aria-current="page">SpinPl<span class="brand-gold">o</span>t</a><span class="brand-version">__SPINPLOT_VERSION__</span></div><div class="window-buttons"><button class="window-button">—</button><button class="window-button">□</button><button class="window-button">×</button></div></header>
 <nav class="menubar">
   <div class="menu-group"><button class="menu-item" data-menu="file"><u>F</u>ile</button><div class="menu-popup">
     <button data-menu-action="open-data">Open Data…</button><button data-menu-action="open-project">Open Project…</button><div class="menu-sep"></div><button data-menu-action="save-project">Save Project</button><button data-menu-action="export">Export Figure</button>
