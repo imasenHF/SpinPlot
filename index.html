@@ -91,14 +91,15 @@ button,input,select,textarea,.layout-expression{font-family:var(--ui-font)}
 @media(max-width:760px){.neo-statusbar{grid-template-columns:max-content minmax(0,1fr)}}
 
 /* Compact shared site branding; preserve the 31px application titlebar. */
-.titlebar{background:#f5f6f4;color:#203139}
+.titlebar{background:linear-gradient(90deg,#173f5f,#245b7f 58%,#6f8794);color:#fff}
 .spinplot-brand{display:flex;align-items:center;gap:8px;min-width:0;white-space:nowrap}
-.brand-icon-link{display:flex;align-items:center;flex-shrink:0}
-.brand-icon-link img{display:block;width:24px;height:24px;object-fit:contain}
-.spinplot-brand .brand-name{font:17px/24px Georgia,"Times New Roman",serif;color:#203139;text-decoration:none}
+.brand-icon-link{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:24px;height:24px;background:#fff}
+.brand-icon-link img{display:block;width:22px;height:22px;object-fit:contain}
+.spinplot-brand .brand-name{font:17px/24px Georgia,"Times New Roman",serif;color:#fff;text-decoration:none}
 .spinplot-brand .brand-gold{color:#b68c37}
-.brand-divider{font:16px/24px Georgia,serif;color:#6b787d}
-.brand-version{font:11px/20px Arial,sans-serif;color:#6b787d}
+.spinplot-brand .brand-name[aria-current="page"]{font-size:14px}
+.brand-divider{font:16px/24px Georgia,serif;color:#fff}
+.brand-version{font:11px/20px Arial,sans-serif;color:#fff}
 .spinplot-brand .brand-name:is(:hover,:active,:focus-visible){text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.16em;text-decoration-skip-ink:auto}
 .spinplot-brand a:focus-visible{outline:2px solid #b68c37;outline-offset:2px}
 @media(max-width:420px){.spinplot-brand{gap:5px}.spinplot-brand .brand-name{font-size:15px}.brand-version{font-size:10px}.titlebar{padding-left:5px}}
