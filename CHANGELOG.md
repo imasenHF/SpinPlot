@@ -1,3 +1,9 @@
+## 0.8.3
+
+- Independent top/right projection, range-label and title visibility.
+- Equal main frames with per-column auxiliary space, avoiding blank colorbar space after 1D panels.
+- Narrow right projections use fewer intensity ticks.
+
 ## 0.8.2
 
 - Constrain data-list grid children and wrap data tools in narrow sidebars.
