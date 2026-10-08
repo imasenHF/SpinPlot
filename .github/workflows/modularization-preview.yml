@@ -1,0 +1,36 @@
+name: SpinPlot modularization preview
+on:
+  push:
+    branches:
+      - 'preview/modularization-*'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Numeric helper regression
+        run: node --test src/core/numeric.test.js
+      - name: Existing 2D regression
+        run: |
+          node src/twod/core.test.js
+          node src/twod/bes3t.test.js
+          node src/twod/large.test.js
+          node src/twod/integration.test.js
+          node src/twod/ticks.test.js
+      - name: Production-equivalent build
+        run: npm run build
+      - name: Upload isolated preview build (not deployed)
+        uses: actions/upload-artifact@v4
+        with:
+          name: spinplot-modularization-preview
+          path: dist/
+          retention-days: 14
+          if-no-files-found: error
