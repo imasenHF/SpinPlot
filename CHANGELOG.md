@@ -1,3 +1,8 @@
+## 0.3.0
+
+- Add a separate 2D EPR viewer with CIQTEK and BES3T axes, heatmap/stack views, two projections, component selection, vector SVG and versioned 2D projects.
+- Validate dimensions, monotonic axes, companion files and byte order. See docs/TWO_DIMENSIONAL.md for limits and verification.
+
 # Changelog
 
 ## 0.2.4 — 2026-10-06
@@ -25,3 +30,4 @@
 首次公开发布。/SpinPlot/ 直接打开软件，旧 legacy 地址跳转至首页。提供现有数据读取、绘图、标注、基线、频率设置、测距及矢量导出功能。使用 Vite 构建和 GitHub Actions 发布。
 
 已验证构建和入口加载；完整科研数据及交互验收待完成。PDF 中文字体仍有限制。应用版本与项目文件格式版本独立管理。
+
