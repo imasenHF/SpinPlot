@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';
+import {defaults,model,render,restore} from './ui.js';
+const d={name:'Million',x:{name:'Field',unit:'G',values:Array.from({length:2000},(_,i)=>3000+i)},y:{name:'Time',unit:'ns',values:Array.from({length:501},(_,i)=>i)},real:Array.from({length:501},()=>Array(2000).fill(2)),imag:Array.from({length:501},()=>Array(2000).fill(0))};
+const s=defaults(d);const start=performance.now(),m=model(d,s);assert.equal(m.p.x.length,2000);assert.equal(m.p.y.length,501);assert.equal(m.p.x[100],2);assert.equal(m.p.y[100],2);assert.strictEqual(model(d,s),m);
+let pixelCount=0;globalThis.window={devicePixelRatio:1};globalThis.document={createElement:()=>({getContext:()=>({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData:im=>{pixelCount=im.data.length/4;}})})};
+const ctx=new Proxy({drawImage:()=>{}},{get:(o,k)=>k in o?o[k]:()=>{}});render(ctx,d,s,{cellX:0,cellY:0,cellW:900,cellH:650},'Arial',{text:'#000',axis:'#000'},'');assert(pixelCount<1_002_000);assert.equal(model(restore(JSON.parse(JSON.stringify(d))),s).p.x[0],2);console.log('1,002,000 cells: full projections, cached processing, pixel preview, project restore passed in',Math.round(performance.now()-start),'ms; preview pixels',pixelCount);

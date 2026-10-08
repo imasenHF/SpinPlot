@@ -1,3 +1,10 @@
+## 0.4.0
+
+- Original Open auto-detects 2D datasets and creates independent subplots; per-subplot 2D options expand on import.
+- Remove standalone 2D dialog and 250,000-cell cap. Canvas previews use pixels while projections use full data; vector export retains full cells.
+- Save matrix data and 2D settings in unified project format 11.
+- Verify 1,002,000-cell processing, cache, rendering and matrix restore.
+
 ## 0.3.0
 
 - Add a separate 2D EPR viewer with CIQTEK and BES3T axes, heatmap/stack views, two projections, component selection, vector SVG and versioned 2D projects.

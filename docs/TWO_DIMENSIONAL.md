@@ -1,11 +1,13 @@
-# Two-dimensional EPR (0.3.0)
+# Two-dimensional EPR (0.4.0)
 
-Open the 2D Map toolbar button, then select one CIQTEK 2D EPR file or a matching BES3T DSC/DTA pair. Include XGF/YGF when declared as IGD. Axes must be strictly monotonic. Unknown units remain as supplied; no guessed units or attenuation coordinates are inserted.
+Use the existing Open Data control for 1D and 2D files. Each recognized 2D dataset creates an independent subplot. Its 2D details section opens automatically. Supported formats: CIQTEK transient and field-power EPR; BES3T DSC/DTA, with XGF/YGF for IGD axes. Multiple 1D and 2D datasets may be selected together.
 
-CIQTEK transient EPR stores time in ns along X and field in G along Y. The viewer automatically swaps these for a field-horizontal map. Field–power files read attenuation from each trace's params.power in dB. Real, imaginary and magnitude components are preserved separately.
+The 2D section controls heatmap/stack view, real/imaginary/magnitude, axis swap, X/Y limits, projection mean/sum/RMS, projection visibility, stack interval and offset. Projection CSV is available there. Default X projection is a sample mean over selected Y; Y projection is sample RMS over selected X, following the MATLAB reference. These are not coordinate-weighted integrals. RMS discards the sign.
 
-The X projection defaults to a mean over the selected Y interval; the Y projection defaults to RMS over the selected X interval, following the supplied MATLAB reference. Mean and sum are sample-based, not coordinate-weighted integrals. RMS is nonnegative and does not retain phase sign. Stack offsets only affect display.
+No cell-count restriction is imposed. Preview renders to canvas pixels with nearest-cell selection using physical axis coordinates, including nonuniform coordinates. Every selected data point contributes to projections and color bounds. Preview resampling never modifies raw arrays. Large vector SVG/PDF exports preserve cells and may produce large files and take substantial time. Other image exports use canvas rendering. Actual capacity depends on browser memory and file size.
 
-Heatmaps use a symmetric blue–white–red scale and exact midpoint cell edges, including nonuniform coordinates. Missing signal cells are left blank. SVG export contains vector cells, curves and text. A 250,000-cell vector limit is enforced explicitly; narrow ranges or use Stack for larger maps. PDF and integration with the 1D project format are not implemented for this viewer. 2D uses its own versioned project file and projection CSV.
+CIQTEK transient time is ns and field is G. The viewer swaps time-first data to field-horizontal by default. Field-power attenuation comes from params.power in dB, with no guessed coordinates. Unknown BES3T axis units remain as supplied.
 
-Verification: node src/twod/core.test.js; npm run build. Synthetic tests cover transpose, projection intervals, mean/RMS, endian decoding, matrix dimensions and invalid axes. Real instrument data and full browser interaction still require validation.
+Save Project includes matrices and 2D settings in SpinPlot project format 11. Older 1D project versions 9 and 10 remain readable. Clear config restores default 2D settings while retaining data. The 2D fold state is stored in config. Wheel zoom, Shift X pan, Ctrl Y pan use 2D bounds. Double click fits both 2D axes. One-dimensional noise selection and ΔB marking do not operate on 2D maps.
+
+Validation: npm run build; node src/twod/core.test.js; node src/twod/large.test.js. Synthetic tests cover 1,002,000 cells, full mean/RMS projections, caching, pixel-based preview and matrix restoration; axis transpose and endian decoding. Real instrument files and full browser interaction still require validation.

@@ -28,5 +28,5 @@ export function orient(d,component='real',swap=false){let z=d.real.map((r,j)=>r.
 export function reduce(values,mode){let sum=0,n=0;for(const v of values)if(Number.isFinite(v)){sum+=mode==='rms'?v*v:v;n++;}return n?(mode==='rms'?Math.sqrt(sum/n):mode==='sum'?sum:sum/n):NaN;}
 export function projections(v,xRange,yRange,xMode='mean',yMode='rms'){
  const xi=v.x.values.map((x,i)=>x>=xRange[0]&&x<=xRange[1]?i:-1).filter(i=>i>=0),yi=v.y.values.map((y,i)=>y>=yRange[0]&&y<=yRange[1]?i:-1).filter(i=>i>=0);if(!xi.length||!yi.length)throw Error('Projection range contains no samples');
- return {xi,yi,x:v.x.values.map((_,i)=>reduce(yi.map(j=>v.z[j][i]),xMode)),y:v.y.values.map((_,j)=>reduce(xi.map(i=>v.z[j][i]),yMode))};
+ const finish=(sum,n,mode)=>n?(mode==='rms'?Math.sqrt(sum/n):mode==='sum'?sum:sum/n):NaN;const x=v.x.values.map((_,i)=>{let sum=0,n=0;for(const j of yi){const z=v.z[j][i];if(Number.isFinite(z)){sum+=xMode==='rms'?z*z:z;n++;}}return finish(sum,n,xMode);}),y=v.y.values.map((_,j)=>{let sum=0,n=0;for(const i of xi){const z=v.z[j][i];if(Number.isFinite(z)){sum+=yMode==='rms'?z*z:z;n++;}}return finish(sum,n,yMode);});return {xi,yi,x,y};
 }
