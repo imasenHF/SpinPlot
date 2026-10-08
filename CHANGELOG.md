@@ -1,3 +1,12 @@
+## 0.8.0
+
+- CIQTEK 1D field/time and 2D field-delay, field-modulation amplitude, field-power and time-field sweeps.
+- Second coordinates taken from trace parameters, with both signal channels preserved.
+- Explicit ms/ns time units, dB attenuation and G modulation amplitude; unknown delay units remain unspecified.
+- Time coordinates excluded from magnetic-field frequency correction and g conversion.
+- Different physical axes open in separate subplots and export with coordinate metadata.
+- Regression checks against all six supplied experiment files, without publishing experimental data.
+
 ## 0.7.1
 
 - BES3T grid files optional when descriptor axis bounds are available; IDX axes need no grid files.

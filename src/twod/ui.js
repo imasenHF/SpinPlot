@@ -61,8 +61,8 @@ export function render(ctx,d,s,box,font,theme,title,options={}){
  });
  if(options.frame!=='none')border(mapBox);if(title?.trim())text(title.trim(),x+pw/2,cy+10,titleSize);
  const xt=options.xTicks?options.xTicks(...xr,Number(s.xStep),5):Array.from({length:5},(_,k)=>xr[0]+(xr[1]-xr[0])*k/4),yt=options.yTicks?options.yTicks(...yr,Number(s.yStep),5):Array.from({length:5},(_,k)=>yr[0]+(yr[1]-yr[0])*k/4);for(const a of xt)text(a.toPrecision(4),X(a),y+ph+tick+3,tick,a===xt[0]?'left':a===xt.at(-1)?'right':'center');if(options.showYTicks!==false)for(const b of yt)text(b.toPrecision(4),x-6,Y(b),tick,'right');
- text(s.xLabel||v.x.name+' ('+v.x.unit+')',x+pw/2,y+ph+(options.xTitleDistance||20)+tick+8,axisSize);
- if(options.showYTitle!==false){ctx.save();ctx.translate(x-(options.yTitleDistance||46),y+ph/2);ctx.rotate(-Math.PI/2);text(s.yLabel||v.y.name+' ('+v.y.unit+')',0,0,axisSize);ctx.restore();}
+ text(s.xLabel||v.x.name+(v.x.unit?' ('+v.x.unit+')':''),x+pw/2,y+ph+(options.xTitleDistance||20)+tick+8,axisSize);
+ if(options.showYTitle!==false){ctx.save();ctx.translate(x-(options.yTitleDistance||46),y+ph/2);ctx.rotate(-Math.PI/2);text(s.yLabel||v.y.name+(v.y.unit?' ('+v.y.unit+')':''),0,0,axisSize);ctx.restore();}
  if(proj){
  const [a0,b0]=extent(p.x,xi),[c0,e0]=extent(p.y,yi),ap=(b0-a0)*.08,cp=(e0-c0)*.08,a=s.xProjectionMin===''?a0-ap:Number(s.xProjectionMin),b=s.xProjectionMax===''?b0+ap:Number(s.xProjectionMax),c=s.yProjectionMin===''?c0-cp:Number(s.yProjectionMin),e=s.yProjectionMax===''?e0+cp:Number(s.yProjectionMax);if(!Number.isFinite(a+b+c+e)||a>=b||c>=e)throw Error('Invalid projection intensity range');projectionRegions=[{x0:top.x,y0:top.y,pw:top.w,ph:top.h,xmin:xr[0],xmax:xr[1],ymin:a,ymax:b,projection:'top'},{x0:side.x,y0:side.y,pw:side.w,ph:side.h,xmin:c,xmax:e,ymin:yr[0],ymax:yr[1],projection:'side',axisHitWidth:gapX}];
  const XP=z=>top.y+top.h-(z-a)/(b-a)*top.h,YP=z=>side.x+(z-c)/(e-c)*side.w;

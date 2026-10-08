@@ -6,14 +6,32 @@ export function validate(d,allow1D=false){
 }
 const num=v=>v===null||v===undefined||v===''?NaN:Number(v);
 const lin=(a,b,n)=>n===1?[a]:Array.from({length:n},(_,i)=>a+(b-a)*i/(n-1));
+// The experiment type selects semantics; per-trace params supply acquired coordinates.
 export function parseCIQ(raw,name){
- const lines=raw.dataStore?.lineDataList,s=raw.setting||{};if(!lines?.length)throw Error('Missing lineDataList');
- const tr=raw.type==='Transient EPR/2D Tr-EPR',cw=raw.type==='CW EPR/2D Field-Power Sweep';if(!tr&&!cw)throw Error('Not a supported CIQTEK 2D experiment');
- const values=lines[0].ReData.map(p=>num(p[0]));
- for(const l of lines){if(l.ReData.length!==values.length||l.ReData.some((p,i)=>Math.abs(num(p[0])-values[i])>1e-8))throw Error('Trace axes differ');if(l.ImData?.length&& (l.ImData.length!==values.length||l.ImData.some((p,i)=>Math.abs(num(p[0])-values[i])>1e-8)))throw Error('Imaginary trace axes differ');}
- const y=tr?{name:'Field',unit:'G',values:lin(num(s.lineEdit_2DTrEPR_StartField),num(s.lineEdit_2DTrEPR_StopField),lines.length)}:{name:'Microwave attenuation',unit:'dB',values:lines.map(l=>num(l.params?.power))};
- return validate({name,x:{name:tr?'Time':'Field',unit:tr?'ns':'G',values},y,real:lines.map(l=>l.ReData.map(p=>num(p[1]))),imag:lines.map(l=>l.ImData?.length?l.ImData.map(p=>num(p[1])):values.map(()=>0)),metadata:{type:raw.type,setting:s,frequencies:lines.map(l=>l.freq??s.frequency)}});
+ const lines=raw.dataStore?.lineDataList,setting=raw.setting||{},type=raw.type||'';
+ if(!Array.isArray(lines)||!lines.length)throw Error('Missing lineDataList');
+ const kinds={
+ 'CW EPR/1D Field Sweep':{x:'Field',unit:'G',dimension:1},
+ 'CW EPR/1D Time Sweep':{x:'Time',unit:'ms',dimension:1},
+ 'CW EPR/2D Field-Power Sweep':{x:'Field',unit:'G',y:'Microwave attenuation',yu:'dB',param:'power'},
+ 'CW EPR/2D Field-Delay Sweep':{x:'Field',unit:'G',y:'Delay',yu:'',param:'delay'},
+ 'CW EPR/2D Field-Modul.Amp. Sweep':{x:'Field',unit:'G',y:'Modulation amplitude',yu:'G',param:'modulamp'},
+ 'CW EPR/2D Time-Field Sweep':{x:'Time',unit:'ms',y:'Field',yu:'G',param:'timefield'},
+ 'Transient EPR/2D Tr-EPR':{x:'Time',unit:'ns',y:'Field',yu:'G',tr:true}
+ };
+ const kind=kinds[type];if(!kind)throw Error('Unsupported CIQTEK experiment: '+type);
+ const axisLabel=String(raw.dataStore.xAxisName||''),label=axisLabel.match(/^(.+?)\s*\[([^\]]*)\]$/),x={name:label?label[1].trim():kind.x,unit:label?label[2].trim():kind.unit,values:[]};
+ if(!Array.isArray(lines[0].ReData)||lines[0].ReData.length<2)throw Error('Missing real trace');
+ x.values=lines[0].ReData.map(p=>num(p[0]));
+ for(const l of lines){for(const channel of ['ReData','ImData']){const points=l[channel];if(channel==='ImData'&&(!points||!points.length))continue;if(!Array.isArray(points)||points.length!==x.values.length||points.some((p,i)=>!Array.isArray(p)||p.length<2||!Number.isFinite(num(p[0]))||!Number.isFinite(num(p[1]))||Math.abs(num(p[0])-x.values[i])>1e-8))throw Error(channel+' trace axes or dimensions differ');}}
+ const warnings=[];if(kind.param==='delay')warnings.push('Delay axis unit is not declared in the file; original coordinate values retained.');
+ const coordinates=kind.dimension===1?lines.map((_,i)=>i):kind.tr?lin(num(setting.lineEdit_2DTrEPR_StartField),num(setting.lineEdit_2DTrEPR_StopField),lines.length):lines.map(l=>{const value=l.params?.[kind.param];if(value===undefined||value===null||String(value).trim()===''||!Number.isFinite(num(value)))throw Error('Missing second-axis coordinate: '+kind.param);return num(value);});
+ const order=coordinates.map((_,i)=>i).sort((a,b)=>coordinates[a]-coordinates[b]);
+ const frequencies=order.map(i=>{const f=num(lines[i].freq??setting.frequency);return Number.isFinite(f)&&f>0?f:null;});
+ return validate({name,x,y:{name:kind.y||'Trace',unit:kind.yu||'',values:order.map(i=>coordinates[i])},real:order.map(i=>lines[i].ReData.map(p=>num(p[1]))),imag:order.map(i=>lines[i].ImData?.length?lines[i].ImData.map(p=>num(p[1])):x.values.map(()=>0)),metadata:{type,setting,dimensions:kind.dimension||2,frequencies,traceNames:order.map(i=>lines[i].name||name),traceParameters:order.map(i=>lines[i].params||{}),warnings}},true);
 }
+export function ciq1DCurves(d){if(d.metadata.dimensions!==1)throw Error('Expected 1D experiment');return d.real.map((row,i)=>({name:d.real.length===1?d.name.replace(/\.[^.]+$/,''):d.metadata.traceNames[i],B:d.x.values.slice(),y:row.slice(),imag:d.imag[i].slice(),freq:d.metadata.frequencies[i],source:d.name,xAxis:{name:d.x.name,unit:d.x.unit},metadata:{type:d.metadata.type,setting:d.metadata.setting}}));}
+export function coordinateScale(c,target){return (!c.xAxis||axisKind(c.xAxis)==='field')&&target&&Number.isFinite(c.freq)&&c.freq>0?target/c.freq:1;}
 export function parseDescriptor(text){const p={};for(const line of text.split(/\r?\n/)){const m=line.trim().match(/^([A-Za-z][\w]*)\s+(.+)$/);if(m)p[m[1]]=m[2].trim().replace(/^['"]|['"]$/g,'');}return p;}
 export function binary(buffer,fmt,little,count){const types={D:[8,'getFloat64'],F:[4,'getFloat32'],I:[4,'getInt32'],S:[2,'getInt16'],C:[1,'getInt8']},t=types[fmt];if(!t)throw Error('Unsupported binary format '+fmt);if(buffer.byteLength!==count*t[0])throw Error('Binary length mismatch');const v=new DataView(buffer);return Array.from({length:count},(_,i)=>v[t[1]](i*t[0],little));}
 export async function parseBES(dsc,files){
