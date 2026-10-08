@@ -1,3 +1,12 @@
+## 0.7.0
+
+- Full-row projection gap controls with 20 px defaults.
+- 2D g axis off by default; local g edits select local override.
+- Stack interval only active in Stack view.
+- Interactive projection coordinate/intensity axes; acquisition axes stay linked to the map.
+- Range labels default inside top-left/top-right; position settings and legend positions are collapsed.
+- Palette previews in per-subplot color controls.
+
 ## 0.6.0
 
 - Open appends incoming datasets in new subplots; explicit Clear all data action.
