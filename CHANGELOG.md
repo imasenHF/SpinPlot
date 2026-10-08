@@ -1,3 +1,9 @@
+## 0.8.6
+
+- Global and subplot X/Y significant digits and automatic/decimal/scientific tick notation.
+- Shared exponent annotations shorten small/large axes; automatic precision distinguishes adjacent ticks and removes trailing zeroes.
+- Apply formatting to 1D/2D axes and projection intensity axes.
+
 ## 0.8.5
 
 - Subplot, heatmap/stack and projection palettes use the Style dropdown with grouped swatch previews and selected states.
