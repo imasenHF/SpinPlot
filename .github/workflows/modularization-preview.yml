@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - 'preview/modularization-*'
+    paths-ignore:
+      - 'preview-site/**'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   verify-and-package:
     runs-on: ubuntu-latest
@@ -34,3 +36,16 @@ jobs:
           path: dist/
           retention-days: 14
           if-no-files-found: error
+      - name: Build browser preview with relative URLs
+        run: npx vite build --base=./ --outDir=preview-site
+      - name: Commit static preview only to isolated branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f preview-site
+          if git diff --cached --quiet; then
+            echo "Preview build unchanged"
+          else
+            git commit -m "build(preview): static browser preview [skip ci]"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
