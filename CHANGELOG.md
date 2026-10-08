@@ -1,4 +1,4 @@
-## 0.9.0
+# Changelog
 
 ## 0.9.2
 
@@ -14,6 +14,8 @@
 - Align wrapped field labels and standardize text input styling across the sidebar.
 - Group axis title/distance and min/max/tick step rows consistently for X, Y and Z.
 - Place the Processing noise range input below its label with full-width styling.
+
+## 0.9.0
 
 - Preserve six tabs; reorganize common 1D/2D subplot sections and scope-specific controls.
 - Move canvas and figure title to Subplots; File menu owns project/config actions.
@@ -92,7 +94,7 @@
 ## 0.5.0
 
 - Add maximum, minimum and peak-to-peak projections alongside mean, RMS and sum.
-- Independent horizontal/vertical range-label positions in each projection frame.
+- Independent horizontal/vertical range-label positions in each projection frame (percent of its own projection frame; values outside 0–100 position labels beyond the frame).
 
 - MATLAB-style framed projections and colorbar, independent projection ranges and optional range labels.
 - Continuous palettes share the application registry; Z input and colorbar wheel adjustment use one state.
@@ -110,10 +112,6 @@
 
 - Add a separate 2D EPR viewer with CIQTEK and BES3T axes, heatmap/stack views, two projections, component selection, vector SVG and versioned 2D projects.
 - Validate dimensions, monotonic axes, companion files and byte order. See docs/TWO_DIMENSIONAL.md for limits and verification.
-
-# Changelog
-
-- Projection range labels now have independent horizontal/vertical positions (percent of each projection frame; negative or >100 values place labels outside).
 
 ## 0.2.4 — 2026-10-06
 
