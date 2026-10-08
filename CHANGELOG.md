@@ -19,6 +19,8 @@
 
 # Changelog
 
+- Projection range labels now have independent horizontal/vertical positions (percent of each projection frame; negative or >100 values place labels outside).
+
 ## 0.2.4 — 2026-10-06
 
 - 恢复蓝色渐变页头，品牌文字改为白色，保留金色点缀；图标采用24px白色方形底，SpinPlot字号改为14px。
