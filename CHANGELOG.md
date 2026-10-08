@@ -1,3 +1,11 @@
+## 0.6.0
+
+- Integrate 2D ranges, Z/colorbar, palettes and projection exports into existing axes/style/layout/export controls.
+- Center titles over the main map; omit filename fallback.
+- Projection traces use the first palette color independently of the heatmap.
+- Recognize physical acquisition axes; allow g on either magnetic-field axis with unit conversion and reserved spacing.
+- Adjustable horizontal/vertical projection gaps.
+
 ## 0.5.0
 
 - Add maximum, minimum and peak-to-peak projections alongside mean, RMS and sum.
