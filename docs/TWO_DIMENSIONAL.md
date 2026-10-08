@@ -1,4 +1,6 @@
-# Two-dimensional EPR (0.4.0)
+# SpinPlot — Two-dimensional EPR
+
+更新日期：2026-10-08（Asia/Shanghai）。以下按当前有效功能描述；逐版本变化见 [CHANGELOG.md](../CHANGELOG.md)，完整状态见 [PROJECT_CONTEXT.md](../PROJECT_CONTEXT.md)。
 
 Use the existing Open Data control for 1D and 2D files. Each recognized 2D dataset creates an independent subplot. Its 2D details section opens automatically. Supported formats: CIQTEK transient and field-power EPR; BES3T DSC/DTA, with XGF/YGF for IGD axes. Multiple 1D and 2D datasets may be selected together.
 
@@ -12,7 +14,7 @@ Save Project includes matrices and 2D settings in SpinPlot project format 11. Ol
 
 Validation: npm run build; node src/twod/core.test.js; node src/twod/large.test.js. Synthetic tests cover 1,002,000 cells, full mean/RMS projections, caching, pixel-based preview and matrix restoration; axis transpose and endian decoding. Real instrument files and full browser interaction still require validation.
 
-## 0.5.0 layout and controls
+## Layout and controls
 
 Projection frames have coordinate ticks and intensity tick labels. Layout follows the uploaded MATLAB reference: X projection above the map, Y projection to the right, then colorbar. Projection X/Y selection ranges are stored separately from display X/Y bounds; labels are shown inside the projection plots by default and may be switched off. Colorbar min/max may be entered or adjusted with the wheel over the bar. Auto Z restores automatic min/max. All gradient palettes use the shared application palette registry.
 
@@ -22,13 +24,13 @@ BES3T now shares one 1D/2D reader, including irregular XGF/YGF coordinates, REAL
 
 Checks: node src/twod/bes3t.test.js additionally covers independent projection intervals, both endian sequences, descending/irregular axes, complex data, 1D irregular field axes and every continuous palette.
 
-## Shared workflow (0.6.0)
+## Shared workflow
 
 Open appends new files to new subplots when data are already loaded. Existing subplot settings and annotations remain. Clear all data empties the session; Clear config retains imported data. Titles are centered over the main map and never fall back to the source filename. Projection lines use the first color of their selected categorical/continuous palette; heatmap and stack gradients are set separately. The file axis labels and units identify field, time, power/attenuation, angle, temperature and modulation amplitude. Modulation amplitude is not treated as a field axis for g conversion.
 
 Checks: node src/twod/integration.test.js covers acquisition types, unit conversion, g in both orientations, map-centered titles, projection palettes and CSV. Live browser checks covered shared folds, g spacing, projection export placement, append (two datasets/two subplots) and clearing (zero datasets).
 
-## Controls and interaction (0.7.0)
+## Controls and interaction
 
 Projection gaps default to 20 px in two half-width fields spanning one row. 2D g axes start off with local settings; edits to local g fields select local override. Stack every N traces is enabled only in Stack view. Range labels start inside the top-left of the upper projection and top-right of the right projection. Label position and legend position folds start closed. Subplot palette selectors show the selected palette swatch.
 
@@ -54,7 +56,7 @@ Subplots with equal grid spans share the maximum required left/right/top/bottom 
 
 Top and right projections each have independent visibility, range-label, and title controls. Hiding a projection removes its accessory space. Mixed columns allocate the required projection/colorbar space per column while keeping all main axes the same size. The 2D data section shows the current dataset; narrow sidebar rows truncate long names with a full-name tooltip.
 
-## Interface organization (0.9.0)
+## Interface organization
 
 The six tabs remain Data, Processing, Subplots, Axes, Style and Export. Figure title and canvas controls are part of the Subplots layout area. File owns project/config operations; existing toolbar shortcuts and file formats remain supported.
 
