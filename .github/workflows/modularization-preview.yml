@@ -20,6 +20,10 @@ jobs:
       - run: npm ci
       - name: Numeric helper regression
         run: node --test src/core/numeric.test.js
+      - name: CSV and interpolation regression
+        run: |
+          node --test src/data/csv.test.js
+          node --test src/processing/interpolation.test.js
       - name: Existing 2D regression
         run: |
           node src/twod/core.test.js
