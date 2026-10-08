@@ -45,7 +45,7 @@ test('offsets are display-only and preserve amplitude data',()=>{
  assert.deepEqual(result.map(c=>c.offset),[0,4.8]);
  assert.deepEqual(result[1].yd,[3.8,7.8,4.8]);
  assert.deepEqual(curves[1].y,[-1,3,0]);
- assert.deepEqual(applyStackOffsets(curves,{...opts,offsetDirection:-1}).map(c=>c.offset),[0,-4.8]);
+ assert.deepEqual(applyStackOffsets(curves,{...opts,offsetDirection:-1}).map(c=>c.offset),[-0,-4.8]); // Preserve signed zero from negating all offsets.
  assert.deepEqual(applyStackOffsets(curves,{...opts,offsetScale:''}).map(c=>c.offset),[0,0]); // Empty string was treated as numeric zero in the original implementation.
  assert.deepEqual(applyStackOffsets(curves,{...opts,offsetMode:'manual',manualOffsets:'0, 3'}).map(c=>c.offset),[0,3]);
  const overlay=applyStackOffsets(curves,{...opts,mode:'overlay'});
