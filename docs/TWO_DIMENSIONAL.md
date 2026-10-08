@@ -53,3 +53,11 @@ Run `node src/twod/ciq.test.js /path/to/extracted/experiments` for exact compari
 Subplots with equal grid spans share the maximum required left/right/top/bottom margins. 1D coordinate frames therefore match 2D main maps in mixed figures; enabling a g axis does not shrink only that subplot. Projections, colorbars and outside legends keep their reserved space. Explicit unequal spans retain their intended size. This geometry applies to interactive views and every export format.
 
 Top and right projections each have independent visibility, range-label, and title controls. Hiding a projection removes its accessory space. Mixed columns allocate the required projection/colorbar space per column while keeping all main axes the same size. The 2D data section shows the current dataset; narrow sidebar rows truncate long names with a full-name tooltip.
+
+## Interface organization (0.9.0)
+
+The six tabs remain Data, Processing, Subplots, Axes, Style and Export. Figure title and canvas controls are part of the Subplots layout area. File owns project/config operations; existing toolbar shortcuts and file formats remain supported.
+
+Each subplot shares the Data → Plot mode → Axes → g axis → Colors → Legend & labels → Projections (2D) → Annotations → Processing parameters → Advanced layout order. X/Y/Z have nested axis groups. Range inheritance controls only bounds and tick step; precision/notation/title overrides have their own explicit values. Blank local 2D bounds restore full coordinate extents.
+
+Processing provides per-subplot noise regions using the same subplot settings as selection on the plot. Baseline and amplitude scaling currently apply to 1D curves; 2D displays its chosen real/imaginary/magnitude signal directly. The interface states this scope and hides unsupported controls. Projection statistics and calculation ranges are separated into top and right groups. Range-label positions remain collapsed; projection spacing belongs to Advanced layout.

@@ -1,3 +1,12 @@
+## 0.9.0
+
+- Preserve six tabs; reorganize common 1D/2D subplot sections and scope-specific controls.
+- Move canvas and figure title to Subplots; File menu owns project/config actions.
+- Processing provides per-subplot noise selection using the existing shared settings.
+- Group global/local axes, expose dataset dimensions/coordinate units, and track local precision/title/color overrides.
+- Hide inapplicable processing, stacking and label controls; local axis edits disable range inheritance.
+- Clearing 2D local limits restores coordinate extents instead of retaining a previous viewport.
+
 ## 0.8.6
 
 - Global and subplot X/Y significant digits and automatic/decimal/scientific tick notation.
