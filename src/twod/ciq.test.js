@@ -15,7 +15,7 @@ if(process.argv[2]){
  for(const [name,e]of Object.entries(expected)){
   const raw=JSON.parse(fs.readFileSync(process.argv[2]+'/'+name,'utf8')),d=parseCIQ(raw,name);assert.deepEqual([d.x.values.length,d.y.values.length,d.x.name,d.x.unit,d.y.name,d.y.unit],e.slice(0,6));if(e[6])assert.deepEqual(d.y.values,e[6]);
   for(let j=0;j<d.real.length;j++)for(let i=0;i<d.x.values.length;i++){assert.equal(d.real[j][i],raw.dataStore.lineDataList[j].ReData[i][1]);assert.equal(d.imag[j][i],raw.dataStore.lineDataList[j].ImData[i][1]);assert.equal(d.x.values[i],raw.dataStore.lineDataList[j].ReData[i][0]);}
-  if(d.metadata.dimensions===2){const v=orient(d,'real',false),p=projections(v,[d.x.values[0],d.x.values.at(-1)],[d.y.values[0],d.y.values.at(-1)],'mean','mean');for(let i=0;i<d.x.values.length;i++)assert(Math.abs(p.x[i]-d.real.reduce((a,row)=>a+row[i],0)/d.real.length)<1e-10);assert.equal(JSON.parse(JSON.stringify(d)).real.length,d.real.length);}
+  if(d.metadata.dimensions===2){const v=orient(d,'real',false),p=projections(v,[d.x.values[0],d.x.values.at(-1)],[d.y.values[0],d.y.values.at(-1)],'mean','mean');for(let i=0;i<d.x.values.length;i++)assert(Math.abs(p.x[i]-d.real.reduce((a,row)=>a+row[i],0)/d.real.length)<1e-10);for(let j=0;j<d.y.values.length;j++)assert(Math.abs(p.y[j]-d.real[j].reduce((a,z)=>a+z,0)/d.x.values.length)<1e-10);const swapped=orient(d,'imag',true);assert.equal(swapped.z[0][0],d.imag[0][0]);assert.equal(swapped.z.at(-1).at(-1),d.imag.at(-1).at(-1));assert.equal(JSON.parse(JSON.stringify(d)).real.length,d.real.length);}
   console.log(name+': '+d.x.values.length+' × '+d.y.values.length+'; coordinates and both channels exact');
  }
 }
