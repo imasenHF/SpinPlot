@@ -1,3 +1,7 @@
+## 0.8.5
+
+- Subplot, heatmap/stack and projection palettes use the Style dropdown with grouped swatch previews and selected states.
+
 ## 0.8.4
 
 - Align Label mode and expanded Legend position captions and controls.
