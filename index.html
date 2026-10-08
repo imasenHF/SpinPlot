@@ -70,6 +70,18 @@ input:not([type]),input[type=text],input[type=number],select:not([multiple]){hei
 .control-pair>.field>label,.control-triple>.field>label{flex:1;overflow-wrap:anywhere}
 .control-pair>label:not(.switch),.control-triple>label:not(.switch){display:grid;grid-template-rows:1fr auto;gap:3px;min-width:0;margin-bottom:7px;font-size:11px;overflow-wrap:anywhere}
 
+.control-label{display:grid;grid-template-rows:1fr auto;gap:3px;min-width:0;margin-bottom:7px;font-size:11px;overflow-wrap:anywhere}
+/* Every checkbox uses the same inline native control and accent. */
+input[type=checkbox]{appearance:auto;accent-color:#173f5f;box-shadow:none;border-radius:2px;width:14px!important;min-width:14px!important;max-width:14px!important;height:14px!important;min-height:14px!important;margin:0;padding:0;flex:0 0 14px;vertical-align:middle}
+.switch{display:flex;flex-direction:row;align-items:center;gap:8px;min-width:0;font-size:11px;line-height:1.35}
+.switch>span,.switch>label{min-width:0;overflow-wrap:anywhere}
+
+/* Hierarchy is shown by indentation; avoid stacked rules at each level. */
+.advanced-layout>.local-block{border-top:0;margin-top:4px;padding-top:4px}
+.advanced-layout .advanced-layout{border-top:0;margin:7px 0 7px 9px;padding-top:0}
+.advanced-layout .advanced-layout>.local-block{padding-left:8px}
+.subplot-section>.local-block{border-top:0}
+
 .axis-title-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}.axis-title-row .switch{margin:0 0 7px;white-space:nowrap}
 .batch-info{background:#fff;min-height:27px;padding:5px 7px;box-shadow:inset 1px 1px #808080,inset -1px -1px #fff,inset 2px 2px #000,inset -2px -2px #dfdfdf;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.batch-log{height:118px;white-space:pre;overflow:auto;font:10px "Courier New",monospace;background:#fff;padding:6px;box-shadow:inset 1px 1px #808080,inset -1px -1px #fff,inset 2px 2px #000,inset -2px -2px #dfdfdf}.batch-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:10px}
 @media(max-width:1100px){.pipeline-main .pipe-step{min-width:38px;padding-left:3px;padding-right:3px}.coord-readout{min-width:150px}.tool-btn.major .tool-text{display:none}.status{max-width:170px}.neo-statusbar{grid-template-columns:minmax(0,1fr) 110px 130px}.neo-statusbar .range-cell{display:none}.neo-statuscell.copyright-cell{max-width:42vw}}
@@ -324,6 +336,7 @@ function organizeGlobalUI(){
  const row=document.createElement('div');row.className='control-triple';pair.after(row);for(const suffix of ['Min','Max','Step'])row.append($('global'+A+suffix).closest('.field'));if(parent.classList.contains('axis-title-row'))parent.remove();if(a!=='z'){const precision=document.createElement('div');precision.className='control-pair';row.after(precision);precision.append($(a+'TickDigits').closest('.field'),$(a+'TickNotation').closest('.field'));}
  }
  for(const row of document.querySelectorAll('[data-page=axes] .grid2,[data-page=axes] .grid3')){if(!row.children.length)row.remove();else if(row.classList.contains('grid2'))row.classList.add('control-pair');else if(row.querySelector('#gMin'))row.classList.add('control-triple');}
+ for(const id of ['plotStylePreset','lineWidth','legendOpacity','customDpi']){const el=$(id),row=el.closest('.grid2');if(!row)continue;row.classList.remove('grid2');}
  const processing=document.querySelector('[data-page=scaling]');const note=document.createElement('div');note.id='processingScope';note.className='small subsection-note';processing.querySelector('.section-title').after(note);const panel=document.createElement('section');panel.className='card';panel.innerHTML='<h3>Subplot noise regions</h3><div class="body" id="processingNoisePanel"></div>';processing.append(panel);$('curveTable').closest('section').querySelector('h3').firstChild.textContent='1D curve scaling ';
 }
 function updateProcessingVisibility(){const mode=$('baselineMode').value;$('baselineBref').closest('.field').hidden=mode!=='reference';$('baselineRegions').closest('.field').hidden=mode!=='region';$('noiseReference').closest('.field').hidden=$('scaleMode').value!=='noise';$('curveTable').closest('section').hidden=$('scaleMode').value!=='manual';}

@@ -1,5 +1,13 @@
 ## 0.9.0
 
+## 0.9.2
+
+- Remove repeated nested fold separators and indent child controls.
+- Standardize all native checkboxes at 14 px with inline labels and a shared accent.
+- Group projection compute ranges and intensity ranges into separate min/max rows.
+- Keep projection visibility switches and titles full-width; group label coordinates and layout placement by purpose.
+- Separate unrelated style and export fields and retain coherent axis range groups.
+
 ## 0.9.1
 
 - Align wrapped field labels and standardize text input styling across the sidebar.
