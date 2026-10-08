@@ -1,47 +1,81 @@
 # SpinPlot
 
-浏览器端 CW EPR 数据处理与作图工具。作者：hyphoon。
+浏览器端 EPR 数据处理、可视化与科学制图工具，重点覆盖连续波（CW）一维谱及二维实验数据，同时兼容已识别的瞬态二维格式。
 
-[打开软件](https://plastocyanin.org/spinplot/) · [版本记录](CHANGELOG.md)
+作者：**hyphoon** · 联系：wuhaifeng@ustc.edu.cn
 
-## 功能与使用范围
+[打开 SpinPlot](https://plastocyanin.org/spinplot/) · [当前项目状态](PROJECT_CONTEXT.md) · [界面风格](docs/STYLE_GUIDE.md) · [架构](docs/ARCHITECTURE.md) · [版本记录](CHANGELOG.md)
 
-支持数据读取、多谱绘图、频率设置、基线处理、标注、磁场测距及矢量导出。项目与配置可下载保存；本项目未配置谱图上传服务器。
+## 功能概览
 
-PDF基础字体不支持中文，包含中文标签时可使用SVG导出。完整浏览器数据操作尚未全面验收，重要数据处理结果应与原始谱图核对。
+| 范围 | 当前功能 |
+| --- | --- |
+| 数据输入 | CSV、CIQTEK `.epr`、BES3T `.DSC/.DTA`（部分坐标轴需 `.XGF/.YGF`）；多文件导入 |
+| 一维数据 | 多曲线叠加与 Stack、全局/子图频率设置、磁场对齐、基线和幅度处理、坐标与 `g` 轴、图例和标注、ΔB 测距 |
+| 二维数据 | Heatmap / Stack、实部/虚部/模值、X/Y/Z 轴与色标、顶部/右侧投影、统计范围、调色板和多子图混排 |
+| 制图界面 | Data / Processing / Subplots / Axes / Style / Export 六个选项卡；画布尺寸、局部覆盖、撤销/重做 |
+| 输出 | PNG、JPEG、WebP、BMP、TIFF、SVG、PDF、数据及投影 CSV、频率元数据 |
+| 工作保存 | 独立配置 JSON 与包含原始数据的项目文件；数据默认在浏览器本地处理 |
+
+具体实验类型、二维轴单位和异常输入限制见 [二维数据说明](docs/TWO_DIMENSIONAL.md)。当前并未声明支持所有 EPR 厂商或序列；其他来源的谱图需先验证解析结果。
+
+## 使用与科研限制
+
+1. 使用 **Open Data** 导入数据；CSV、CIQTEK 和 BES3T 文件的具体匹配关系由解析器检查。后续导入的数据可追加为新的子图。
+2. 根据源数据设置或确认微波频率，检查磁场单位及轴方向，再进行频率对齐和 `g` 值绘制。时间轴、功率衰减和调制幅度等物理量不能作为磁场进行 `g` 换算。
+3. 一维基线/噪声处理不会自动应用到二维矩阵。二维投影的均值、RMS 与求和使用样本点统计，**求和不等同于按非等间距坐标加权积分**。
+4. 输出前核查原始信号、显示偏移、坐标范围及单位。当前 PDF 基础字体不完整支持中文；含中文文字时优先导出 SVG。
+5. 项目提供本地文件处理，不配置在线账户和实验谱图上传服务器。大型二维矩阵和矢量输出受浏览器资源限制。
 
 ## 本地运行
 
-使用Node.js 22或兼容版本：
+建议 Node.js 22（或经验证的兼容版本）：
 
-```sh
+```bash
 npm ci
 npm run dev
 ```
 
-构建与预览：
+构建与本地预览：
 
-```sh
+```bash
 npm run build
 npm run preview
 ```
 
-构建包含TypeScript检查，输出位于 `dist/`。main分支提交通过GitHub Actions发布，Vite基础路径为 `/spinplot/`。
+构建脚本执行 `tsc --noEmit && vite build`，产物位于 `dist/`。相关二维回归测试可运行：
 
-## 版本与文件兼容
+```bash
+node src/twod/core.test.js
+node src/twod/bes3t.test.js
+node src/twod/large.test.js
+node src/twod/integration.test.js
+node src/twod/ticks.test.js
+```
 
-应用版本以 `package.json` 的 `version` 为准，并写入页面、About与保存文件的 `appVersion`。版本变更记录于 [CHANGELOG.md](CHANGELOG.md)，使用MAJOR.MINOR.PATCH。
+仪器样本回归（需使用本地、未公开的实验文件）参见 [二维数据说明](docs/TWO_DIMENSIONAL.md)。构建通过不等同于浏览器全流程或科学数值验收通过。
 
-保存格式分别编号：配置（Config）为 `version: 10`，项目（Project）为 `version: 11`，两者均独立于应用版本。项目文件的 `config` 字段包含对应配置。读取旧文件或修改格式时需检查兼容性，并在版本记录中说明迁移方式。发布标签应在构建与部署检查后建立。
+## 版本、保存与兼容
 
-## 代码结构
+- **应用版本**：以 `package.json` 的 `version` 为准；检查时为 **0.9.2**，`appVersion` 会写入保存文件。应用版本依 MAJOR.MINOR.PATCH 管理，历史详见 [CHANGELOG.md](CHANGELOG.md)。
+- **项目格式**：`type: "SpinPlotProject"`，当前 `version: 11`；包含数据数组、二维矩阵与配置。载入逻辑支持经校验的旧项目版本 9/10/11，无法读取时应提示错误。
+- **配置格式**：当前 `version: 10`；单独保存布局、选项和参数，不包含原始谱图数组。项目文件内部也含有此配置。
+- **迁移要求**：文件格式的版本号独立于应用版本；字段变化需检查历史项目读取、兼容性和失败提示，版本标签应在构建与发布检查后创建。
 
-现有计算与交互代码主要位于 `index.html`。TypeScript/React依赖用于后续模块化迁移，当前迁移尚未完成，计划见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+## 源码、部署和维护
 
-正式网页入口为 `/spinplot/`；旧 `/spinplot/legacy/` 跳转首页，主站兼容页保留旧大写入口的查询参数与锚点。
+目前主要应用逻辑和 CSS 仍在根目录 `index.html`；`src/interface.js` 管理子图控件重组，`src/twod/` 包含二维解析、显示、调色板、刻度及测试。Vite 用于构建，React/TypeScript 依赖尚未对应完整的前端模块迁移。现行代码结构与规划详见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)。
 
-## 联系与许可
+提交至 `main` 通过 GitHub Actions 构建和发布 GitHub Pages，Vite 的基础路径为 `/spinplot/`。正式入口是 [plastocyanin.org/spinplot/](https://plastocyanin.org/spinplot/)；旧 `/spinplot/legacy/` 用于兼容跳转，主站另维护旧大写路径的跳转。
 
-wuhaifeng@ustc.edu.cn
+维护文件分工：
 
-本仓库未指定开源许可证。
+- [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)：当前有效状态、功能边界、未验证事项与待办。
+- [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md)：应用专属视觉与交互约束。
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)：源码结构、数据与迁移设计。
+- [docs/TWO_DIMENSIONAL.md](docs/TWO_DIMENSIONAL.md)：二维格式、坐标定义、算法和回归说明。
+- [CHANGELOG.md](CHANGELOG.md)：逐版本变动。
+
+## 许可
+
+本仓库目前未指定开源许可证；代码可在 GitHub 查看，但不能由此推定获得一般性的再分发或商用授权。
