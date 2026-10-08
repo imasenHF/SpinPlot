@@ -1,5 +1,8 @@
 ## 0.5.0
 
+- Add maximum, minimum and peak-to-peak projections alongside mean, RMS and sum.
+- Independent horizontal/vertical range-label positions in each projection frame.
+
 - MATLAB-style framed projections and colorbar, independent projection ranges and optional range labels.
 - Continuous palettes share the application registry; Z input and colorbar wheel adjustment use one state.
 - Restore standard subplot settings; explicitly identify 1D-only operations.

@@ -25,8 +25,11 @@ export async function parseBES(dsc,files){
  return validate({name:dsc.name,x:await axis('X',nx),y:await axis('Y',ny),real,imag,metadata:p},true);
 }
 export function orient(d,component='real',swap=false){let z=d.real.map((r,j)=>r.map((v,i)=>component==='imag'?d.imag[j][i]:component==='magnitude'?Math.hypot(v,d.imag[j][i]):v));return swap?{x:d.y,y:d.x,z:d.x.values.map((_,i)=>z.map(r=>r[i]))}:{x:d.x,y:d.y,z};}
-export function reduce(values,mode){let sum=0,n=0;for(const v of values)if(Number.isFinite(v)){sum+=mode==='rms'?v*v:v;n++;}return n?(mode==='rms'?Math.sqrt(sum/n):mode==='sum'?sum:sum/n):NaN;}
+// Ignore non-finite samples; an empty slice remains NaN for plotting gaps.
+export function reduce(values,mode){let sum=0,n=0,lo=Infinity,hi=-Infinity;for(const v of values)if(Number.isFinite(v)){sum+=mode==='rms'?v*v:v;lo=Math.min(lo,v);hi=Math.max(hi,v);n++;}return !n?NaN:mode==='max'?hi:mode==='min'?lo:mode==='ptp'?hi-lo:mode==='rms'?Math.sqrt(sum/n):mode==='sum'?sum:sum/n;}
 export function projections(v,xRange,yRange,xMode='mean',yMode='rms'){
  const xi=v.x.values.map((x,i)=>x>=xRange[0]&&x<=xRange[1]?i:-1).filter(i=>i>=0),yi=v.y.values.map((y,i)=>y>=yRange[0]&&y<=yRange[1]?i:-1).filter(i=>i>=0);if(!xi.length||!yi.length)throw Error('Projection range contains no samples');
- const finish=(sum,n,mode)=>n?(mode==='rms'?Math.sqrt(sum/n):mode==='sum'?sum:sum/n):NaN;const x=v.x.values.map((_,i)=>{let sum=0,n=0;for(const j of yi){const z=v.z[j][i];if(Number.isFinite(z)){sum+=xMode==='rms'?z*z:z;n++;}}return finish(sum,n,xMode);}),y=v.y.values.map((_,j)=>{let sum=0,n=0;for(const i of xi){const z=v.z[j][i];if(Number.isFinite(z)){sum+=yMode==='rms'?z*z:z;n++;}}return finish(sum,n,yMode);});return {xi,yi,x,y};
+ function* column(i){for(const j of yi)yield v.z[j][i];}
+ function* row(j){for(const i of xi)yield v.z[j][i];}
+ const x=v.x.values.map((_,i)=>reduce(column(i),xMode)),y=v.y.values.map((_,j)=>reduce(row(j),yMode));return {xi,yi,x,y};
 }
