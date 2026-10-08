@@ -52,6 +52,20 @@ public/legacy/           旧路径跳转
 
 新增或重命名字段时先确定旧文件读取行为与迁移结果；不能自动恢复的属性必须提示丢失/不支持。配置恢复不应覆盖已导入的原始数据；项目文件加载需校验数组、二维矩阵、版本和引用下标。
 
+## 5. 隔离预览分支的阶段性模块化（未合并 main）
+
+目前在 `preview/modularization-phase1-20261009` 分支进行渐进拆分，正式 `main` 仍沿用旧结构。分支中：
+
+- `src/main.js`：由根 HTML 迁出的应用入口、DOM 控件、渲染、状态与事件绑定。
+- `src/styles/app.css`：独立界面样式。
+- `src/core/numeric.js`：数值和字符串范围解析。
+- `src/data/csv.js`：CSV 多曲线输入。
+- `src/processing/interpolation.js`：一维线性插值。
+- `src/project/project.js`：项目文件及向后兼容校验。
+- `src/processing/signal.js`：一维基线、噪声和仅用于显示的 Stack 偏移；保留原始算法逻辑。
+
+各模块均有合成数据回归测试；UI 相关函数仍集中于 `src/main.js`，不应描述为完整解耦。详细部署与验收状态见 [MODULARIZATION_PREVIEW.md](MODULARIZATION_PREVIEW.md)。
+
 ## 5. 模块化目标（尚未全部实施）
 
 | 拟议模块 | 后续职责 |
