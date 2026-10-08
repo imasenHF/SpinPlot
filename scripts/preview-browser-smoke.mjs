@@ -24,6 +24,27 @@ try {
   const [download] = await Promise.all([page.waitForEvent('download',{timeout:15000}),page.locator('#exportCsvBtn').click()]);
   assert.match(download.suggestedFilename(),/\.csv$/i);
   await download.saveAs('browser-preview/synthetic-global.csv');
+  // Project and config persistence: verify format numbers and legacy project reload.
+  const [projectDownload] = await Promise.all([page.waitForEvent('download',{timeout:15000}),page.locator('#saveProjectBtn').click()]);
+  const projectPath='browser-preview/synthetic-project.spinplot.json';
+  await projectDownload.saveAs(projectPath);
+  const project=JSON.parse(fs.readFileSync(projectPath,'utf8'));
+  assert.equal(project.type,'SpinPlotProject');
+  assert.equal(project.version,11);
+  assert.equal(project.config.version,10);
+  assert.equal(project.rawCurves.length,2);
+  const [configDownload] = await Promise.all([page.waitForEvent('download',{timeout:15000}),page.locator('#saveConfigBtn').click()]);
+  const configPath='browser-preview/synthetic-config.json';
+  await configDownload.saveAs(configPath);
+  const config=JSON.parse(fs.readFileSync(configPath,'utf8'));
+  assert.equal(config.version,10);
+  assert.ok(!Object.hasOwn(config,'rawCurves'));
+  for (const version of [9,10,11]) {
+    const fileName='synthetic-v'+version+'.spinplot.json';
+    await page.locator('#projectFile').setInputFiles({name:fileName,mimeType:'application/json',buffer:Buffer.from(JSON.stringify({...project,version}))});
+    await page.waitForFunction((name)=>document.querySelector('#log')?.textContent?.includes('Project loaded: '+name),fileName,{timeout:15000});
+    assert.equal((await page.locator('#dataCount').textContent()).trim(),'2');
+  }
   assert.equal(errors.length,0,'Browser script error: '+errors.join(' | '));
   await page.close();
   const narrow = await browser.newPage({viewport:{width:650,height:850}});
@@ -33,7 +54,7 @@ try {
   assert.equal(await narrow.locator('.tab-btn').count(),6);
   await narrow.screenshot({path:'browser-preview/spinplot-narrow.png',fullPage:true});
   assert.equal(errors.length,0,'Browser script error: '+errors.join(' | '));
-  console.log('BROWSER PASS: open + 6 tabs + synthetic CSV import + CSV export + wide/narrow screenshots');
+  console.log('BROWSER PASS: open, six tabs, CSV import/export, project v9/10/11 roundtrip, config v10, wide/narrow screenshots');
 } finally {
   await browser.close();
 }
