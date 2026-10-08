@@ -24,6 +24,8 @@ jobs:
         run: |
           node --test src/data/csv.test.js
           node --test src/processing/interpolation.test.js
+      - name: Project serialization and compatibility regression
+        run: node --test src/project/project.test.js
       - name: Existing 2D regression
         run: |
           node src/twod/core.test.js
