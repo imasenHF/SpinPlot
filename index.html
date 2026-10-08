@@ -82,6 +82,16 @@ input[type=checkbox]{appearance:auto;accent-color:#173f5f;box-shadow:none;border
 .advanced-layout .advanced-layout>.local-block{padding-left:8px}
 .subplot-section>.local-block{border-top:0}
 
+/* Button rows include vertical space around their controls. */
+.row,.noise-controls,.annotation-actions{padding-top:3px;padding-bottom:3px;min-height:30px;align-items:center}
+.input-action{min-height:28px;align-items:center}
+.input-action .tool-btn,#applyLayoutSizeBtn{height:22px;min-height:22px;padding:2px}
+.toolbar>button,.toolbar>.tool-btn{height:26px;min-height:26px;white-space:nowrap;flex-shrink:0;padding-top:3px;padding-bottom:3px}
+.curve-tools{min-height:30px;padding-top:3px;padding-bottom:3px}
+.annotation-heading{min-height:30px;padding-top:3px;padding-bottom:3px}
+.card h3{padding-top:2px;padding-bottom:2px}
+.local-block>button{margin-top:3px;margin-bottom:3px}
+
 .axis-title-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}.axis-title-row .switch{margin:0 0 7px;white-space:nowrap}
 .batch-info{background:#fff;min-height:27px;padding:5px 7px;box-shadow:inset 1px 1px #808080,inset -1px -1px #fff,inset 2px 2px #000,inset -2px -2px #dfdfdf;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.batch-log{height:118px;white-space:pre;overflow:auto;font:10px "Courier New",monospace;background:#fff;padding:6px;box-shadow:inset 1px 1px #808080,inset -1px -1px #fff,inset 2px 2px #000,inset -2px -2px #dfdfdf}.batch-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:10px}
 @media(max-width:1100px){.pipeline-main .pipe-step{min-width:38px;padding-left:3px;padding-right:3px}.coord-readout{min-width:150px}.tool-btn.major .tool-text{display:none}.status{max-width:170px}.neo-statusbar{grid-template-columns:minmax(0,1fr) 110px 130px}.neo-statusbar .range-cell{display:none}.neo-statuscell.copyright-cell{max-width:42vw}}

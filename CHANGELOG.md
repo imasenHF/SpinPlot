@@ -2,6 +2,7 @@
 
 ## 0.9.2
 
+- Give button rows vertical clearance and place Auto Z in its own action row.
 - Remove repeated nested fold separators and indent child controls.
 - Standardize all native checkboxes at 14 px with inline labels and a shared accent.
 - Group projection compute ranges and intensity ranges into separate min/max rows.
