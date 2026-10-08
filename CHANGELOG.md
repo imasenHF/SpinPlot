@@ -1,3 +1,9 @@
+## 0.8.1
+
+- All equal grid spans share main-axis frame dimensions, including mixed 1D/2D and g on/off.
+- Projection, colorbar, g-axis and outside-legend space reserved across matching cells.
+- Screen and exported figures use the same frame geometry.
+
 ## 0.8.0
 
 - CIQTEK 1D field/time and 2D field-delay, field-modulation amplitude, field-power and time-field sweeps.

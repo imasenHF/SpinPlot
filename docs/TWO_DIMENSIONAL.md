@@ -47,3 +47,7 @@ Recognized types: CW 1D Field/Time Sweep; CW 2D Field-Power, Field-Delay, Field-
 Time units follow dataStore.xAxisName (CW examples: ms; transient default: ns). Power trace params record attenuation in dB. Modulation amplitude uses G. Field-delay examples do not declare a delay unit, so the original values remain unitless with an import notice.
 
 Run `node src/twod/ciq.test.js /path/to/extracted/experiments` for exact comparison of coordinates and both signal channels with the six supplied examples. Private input data are not included in the repository.
+
+### Consistent main frames
+
+Subplots with equal grid spans share the maximum required left/right/top/bottom margins. 1D coordinate frames therefore match 2D main maps in mixed figures; enabling a g axis does not shrink only that subplot. Projections, colorbars and outside legends keep their reserved space. Explicit unequal spans retain their intended size. This geometry applies to interactive views and every export format.

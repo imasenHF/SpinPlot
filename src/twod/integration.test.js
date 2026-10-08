@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {axisKind,fieldToGauss} from './core.js';
-import {defaults,render,projectionColor,projectionCsv,stackRows,model} from './ui.js';
+import {defaults,render,projectionColor,projectionCsv,stackRows,model,plotInsets,sharedMainInsets} from './ui.js';
 for(const [name,unit,kind]of [['Power','mW','power'],['Angle','deg','angle'],['Temperature','K','temperature'],['Modulation amplitude','mT','modulation'],['Delay','ns','time'],['Field','mT','field']])assert.equal(axisKind({name,unit}),kind);
 assert.equal(fieldToGauss({name:'Modulation amplitude',unit:'G'}),null);
 assert.equal(fieldToGauss({name:'Field',unit:'mT'}),10);
@@ -14,3 +14,6 @@ const ms=defaults(d);assert.equal(ms.projectionGapX,20);assert.equal(ms.projecti
 const prs=draw(defaults(d)).g.projectionRegions;assert.equal(prs.length,2);assert.equal(prs[0].projection,'top');assert.equal(prs[1].projection,'side');assert.equal(prs[0].xmin,300);assert.equal(prs[1].ymax,2);
 const limits=defaults(d);limits.xProjectionMin=-10;limits.xProjectionMax=10;assert.equal(draw(limits).g.projectionRegions[0].ymin,-10);assert.equal(draw(limits).g.projectionRegions[0].ymax,10);
 console.log('Projection geometry, intensity overrides, default gaps and stack decimation passed');
+
+// Equal spans share the drawable main frame, including mixed g visibility.
+const box={cellW:600,cellH:500},opts={axisSize:14,g:{show:false,titleDistance:22},frequency:9.85};const map=defaults(d),noG=plotInsets(d,map,box,'',opts),withG=plotInsets(d,map,box,'',{...opts,g:{show:true,titleDistance:22}});const entries=[{index:0,box,insets:{left:56,right:16,top:34,bottom:34},twoD:false},{index:1,box,insets:noG,twoD:true},{index:2,box,insets:withG,twoD:true}];const common=sharedMainInsets(entries);assert.deepEqual(common.get(0),common.get(1));assert.deepEqual(common.get(1),common.get(2));for(const entry of entries)for(const k of ['left','right','top','bottom'])assert(common.get(entry.index)[k]>=entry.insets[k]);const plain=sharedMainInsets([{index:0,box,insets:{left:56,right:16,top:10,bottom:34}},{index:1,box,insets:{left:56,right:16,top:45,bottom:34}}]);assert.equal(plain.get(0).top,45);assert.equal(plain.get(1).top,45);assert.equal(sharedMainInsets([{index:0,box,insets:noG},{index:1,box:{cellW:1200,cellH:500},insets:withG}]).size,0);console.log('Equal-span main frames: mixed 1D/2D, g on/off; explicit unequal spans preserved');
