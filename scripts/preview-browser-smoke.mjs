@@ -25,9 +25,11 @@ try {
   assert.match(download.suggestedFilename(),/\.csv$/i);
   await download.saveAs('browser-preview/synthetic-global.csv');
   // Verify the new pure baseline module through the real UI and exported display data.
+  await page.locator('button.tab-btn[data-tab="scaling"]').click();
   await page.locator('#baselineMode').selectOption('region');
   await page.locator('#baselineRegions').fill('3300-3310');
   const exportDisplay=async (path)=>{
+    await page.locator('button.tab-btn[data-tab="export"]').click();
     const [d] = await Promise.all([
       page.waitForEvent('download',{timeout:15000}),
       page.locator('#exportDisplayCsvBtn').click()
