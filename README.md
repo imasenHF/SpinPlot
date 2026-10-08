@@ -32,7 +32,7 @@ npm run preview
 
 应用版本以 `package.json` 的 `version` 为准，并写入页面、About与保存文件的 `appVersion`。版本变更记录于 [CHANGELOG.md](CHANGELOG.md)，使用MAJOR.MINOR.PATCH。
 
-项目与配置的 `version: 10` 表示文件格式，独立于应用版本。格式修改需说明兼容性和迁移方式。发布标签应在构建与部署检查后建立。
+保存格式分别编号：配置（Config）为 `version: 10`，项目（Project）为 `version: 11`，两者均独立于应用版本。项目文件的 `config` 字段包含对应配置。读取旧文件或修改格式时需检查兼容性，并在版本记录中说明迁移方式。发布标签应在构建与部署检查后建立。
 
 ## 代码结构
 
