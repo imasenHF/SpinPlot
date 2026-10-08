@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {parseBES} from './core.js';
+import {model,defaults,adjustZ,colorStops,color} from './ui.js';
+import {COLOR_SCHEMES} from './palettes.js';
+const bytes=(a,fmt,le)=>{const b=new ArrayBuffer(a.length*(fmt==='D'?8:4));a.forEach((v,i)=>new DataView(b)[fmt==='D'?'setFloat64':'setFloat32'](i*(fmt==='D'?8:4),v,le));return b;};
+for(const le of [true,false]){
+ const dsc={name:'Test.DSC',text:async()=>`XPTS 3\nYPTS 2\nZPTS 1\nXTYP IGD\nXFMT D\nXNAM 'Time'\nXUNI 's'\nYTYP IDX\nYMIN 3200\nYWID -100\nYNAM 'Field'\nYUNI 'G'\nIRFMT F\nIIFMT F\nIKKF CPLX\nBSEQ ${le?'LIT':'BIG'}`},files=[{name:'test.XGF',arrayBuffer:async()=>bytes([0,.001,.003],'D',le)},{name:'test.dta',arrayBuffer:async()=>bytes([1,10,2,20,3,30,4,40,5,50,6,60],'F',le)}];
+ const d=await parseBES(dsc,files);assert.deepEqual(d.real,[[1,2,3],[4,5,6]]);assert.deepEqual(d.imag,[[10,20,30],[40,50,60]]);assert.deepEqual(d.x.values,[0,.001,.003]);assert.deepEqual(d.y.values,[3200,3100]);const s=defaults(d);s.projectionYMin=.001;s.projectionYMax=.003;const m=model(d,s);assert.deepEqual(m.p.x,[2.5,5.5]);s.xMin=3100;s.xMax=3150;assert.deepEqual(model(d,s).p.x,[2.5,5.5]);assert.equal(model(d,s).p.y[0],Math.sqrt(8.5));const z=model(d,s);adjustZ(s,z,-1);assert(s.zMax-s.zMin<z.zmax-z.zmin);
+ await assert.rejects(()=>parseBES(dsc,files.filter(f=>!f.name.endsWith('XGF'))));}
+for(const [key,v]of Object.entries(COLOR_SCHEMES).filter(([k,v])=>v.gradient)){assert.deepEqual(colorStops({scheme:key}),v.gradient);assert(color(v.gradient,0).every(Number.isFinite));assert(color(v.gradient,1).every(Number.isFinite));}
+const one={name:'one.dsc',text:async()=>"XPTS 3\nXTYP IGD\nXFMT D\nIRFMT F\nBSEQ LIT\nXNAM 'Field'\nXUNI 'mT'"};const d=await parseBES(one,[{name:'one.xgf',arrayBuffer:async()=>bytes([300,310,330],'D',true)},{name:'one.dta',arrayBuffer:async()=>bytes([1,2,3],'F',true)}]);assert.equal(d.y.values.length,1);assert.deepEqual(d.x.values,[300,310,330]);console.log('BES3T 1D/2D irregular, descending, complex, endian; independent projection, Z zoom and every continuous palette passed');
