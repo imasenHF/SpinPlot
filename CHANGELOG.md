@@ -1,5 +1,11 @@
 ## 0.9.0
 
+## 0.9.1
+
+- Align wrapped field labels and standardize text input styling across the sidebar.
+- Group axis title/distance and min/max/tick step rows consistently for X, Y and Z.
+- Place the Processing noise range input below its label with full-width styling.
+
 - Preserve six tabs; reorganize common 1D/2D subplot sections and scope-specific controls.
 - Move canvas and figure title to Subplots; File menu owns project/config actions.
 - Processing provides per-subplot noise selection using the existing shared settings.
