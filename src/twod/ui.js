@@ -8,7 +8,7 @@ export function model(d,s){migrate(d,s);const key=JSON.stringify(s),cached=cache
 export function controls(card,sp,d,onChange){
  const s=migrate(d,sp.twoD.settings),root=card.querySelector('.subplot-body');
  if(!s.sharedControls){sp.mode=s.mode==='stack'?'stack':'overlay';sp.offsetScale=s.offset;for(const a of ['x','y']){sp[a+'UseGlobal']=false;sp[a+'Min']=s[a+'Min'];sp[a+'Max']=s[a+'Max'];}s.sharedControls=true;}
- const findBlock=field=>card.querySelector('[data-field='+field+']').closest('details').querySelector('.local-block');
+ const findBlock=field=>card.querySelector('[data-field='+field+']').closest('details').querySelector('.local-block,.grid4');
  const axes=findBlock('xUseGlobal'),colors=findBlock('colorSchemeOverride'),layout=findBlock('gridRow');axes.closest('details').querySelector('summary').firstChild.textContent='X / Y / Z axis override ';
  function section(title,open=false){const box=document.createElement('details');box.className='advanced-layout';box.open=open;const sum=document.createElement('summary');sum.textContent=title;box.append(sum);const body=document.createElement('div');body.className='local-block grid2';box.append(body);root.prepend(box);return {box,body};}
  const {box,body}=section('2D · '+d.x.name+' ('+d.x.unit+') × '+d.y.name+' ('+d.y.unit+') · '+d.x.values.length+' × '+d.y.values.length,s.open!==false);box.classList.add('twod-options');box.ontoggle=()=>{s.open=box.open;};
