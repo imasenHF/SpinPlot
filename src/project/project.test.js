@@ -33,7 +33,7 @@ test('invalid versions, axes and frequencies are rejected',()=>{
 test('config format and references remain checked',()=>{
  assert.throws(()=>validateProjectConfig({version:11,subplots:[]},1),/Unsupported config/);
  assert.throws(()=>validateProjectConfig({version:10,subplots:[{curves:[1]}]},1),/invalid curve index/);
- assert.throws(()=>validateProjectConfig({version:10,subplots:[{curves:[],twoD:{index:0,settings:{}}}]},1),/Invalid 2D subplot reference/);
+ assert.throws(()=>validateProjectConfig({version:10,subplots:[{curves:[],twoD:{index:0,settings:null}}]},1),/Invalid 2D subplot reference/);
  assert.throws(()=>parseProjectCurves({type:'SpinPlotProject',version:11,rawCurves:[one()],config:{version:10,subplots:[{curves:[],twoD:{index:0,settings:{mode:'heatmap'}}}]}}),/non-matrix/);
 });
 test('valid 2D matrix references are restored and retained',()=>{
