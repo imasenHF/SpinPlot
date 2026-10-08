@@ -1,3 +1,9 @@
+## 0.7.1
+
+- BES3T grid files optional when descriptor axis bounds are available; IDX axes need no grid files.
+- Global Z/colorbar title, range, tick step, title distance and visibility controls.
+- Local Z bounds share a row; colorbar titles hidden by default.
+
 ## 0.7.0
 
 - Full-row projection gap controls with 20 px defaults.
