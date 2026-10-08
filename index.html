@@ -62,6 +62,7 @@ input:not([type]),input[type=text],input[type=number],select,textarea{width:100%
 }
 
 /* Match control baselines even when a neighboring label wraps. */
+input:not([type]),input[type=text],input[type=number],select:not([multiple]){height:24px;min-height:24px}
 .grid2>.field>label,.grid3>.field>label,.grid4>.field>label{flex:1;overflow-wrap:anywhere}
 .grid2>label:not(.switch),.grid3>label:not(.switch),.grid4>label:not(.switch){display:grid;grid-template-rows:1fr auto;gap:3px;min-width:0;margin-bottom:7px;font-size:11px;overflow-wrap:anywhere}
 .control-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px}
@@ -322,7 +323,7 @@ function organizeGlobalUI(){
  const pair=document.createElement('div');pair.className='control-pair';if(parent.classList.contains('axis-title-row')){parent.before(pair);const hide=$(a==='z'?'hideZTitle':'hideYTitle');if(hide&&a==='z')parent.after(hide.closest('.switch'));}else title.before(pair);pair.append(title,distance);
  const row=document.createElement('div');row.className='control-triple';pair.after(row);for(const suffix of ['Min','Max','Step'])row.append($('global'+A+suffix).closest('.field'));if(parent.classList.contains('axis-title-row'))parent.remove();
  }
- for(const row of document.querySelectorAll('[data-page=axes] .grid2,[data-page=axes] .grid3')){if(!row.children.length)row.remove();else if(row.querySelector('#gLabel'))row.classList.add('control-pair');else if(row.querySelector('#gMin'))row.classList.add('control-triple');}
+ for(const row of document.querySelectorAll('[data-page=axes] .grid2,[data-page=axes] .grid3')){if(!row.children.length)row.remove();else if(row.classList.contains('grid2'))row.classList.add('control-pair');else if(row.querySelector('#gMin'))row.classList.add('control-triple');}
  const processing=document.querySelector('[data-page=scaling]');const note=document.createElement('div');note.id='processingScope';note.className='small subsection-note';processing.querySelector('.section-title').after(note);const panel=document.createElement('section');panel.className='card';panel.innerHTML='<h3>Subplot noise regions</h3><div class="body" id="processingNoisePanel"></div>';processing.append(panel);$('curveTable').closest('section').querySelector('h3').firstChild.textContent='1D curve scaling ';
 }
 function updateProcessingVisibility(){const mode=$('baselineMode').value;$('baselineBref').closest('.field').hidden=mode!=='reference';$('baselineRegions').closest('.field').hidden=mode!=='region';$('noiseReference').closest('.field').hidden=$('scaleMode').value!=='noise';$('curveTable').closest('section').hidden=$('scaleMode').value!=='manual';}
