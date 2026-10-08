@@ -57,3 +57,12 @@ npm run build
 - 保留 `src/main.js` 的 DOM 采集、文件读取、保存下载、UI 赋值与绘图触发；保存结构及错误信息原则上不变。
 - 新增 `src/project/project.test.js`，覆盖版本、旧格式、空值恢复、反向/非单调磁场、缺失和错误引用、二维矩阵。
 - 新阶段完成构建和浏览器导入/导出验证后再更新主站 `/previews/spinplot-modularization/` 快照。正式项目仓库 `main` 与 `/spinplot/` 不做变更。
+
+第二阶段验收记录（2026-10-09）：
+
+- [项目格式/数值/二维测试和 Vite 构建（37822366947）](https://github.com/imasenHF/spinplot/actions/runs/37822366947)：通过。
+- [项目 9/10/11 保存与重新载入、配置 10、合成 CSV 的 Chromium 浏览器测试（37822653813）](https://github.com/imasenHF/spinplot/actions/runs/37822653813)：通过，宽屏/窄屏截图已作为 artifact 保存。
+- [主站新的预览快照发布（37822594761）](https://github.com/imasenHF/imasenhf.github.io/actions/runs/37822594761)：通过；静态资源和预览指向构建提交 `50e3d38`。
+- 用户确认第一阶段预览实际操作未发现问题；第二阶段仅有自动化测试记录，不能沿用该人工反馈作为第二阶段验收。
+
+仍待验收：真实 CIQTEK/BES3T 文件、旧实验项目及二维交互处理、数值精度、各种图像导出与中文字符。
