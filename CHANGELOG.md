@@ -1,3 +1,8 @@
+## 0.8.4
+
+- Align Label mode and expanded Legend position captions and controls.
+- Remove the separator above Legend position.
+
 ## 0.8.3
 
 - Independent top/right projection, range-label and title visibility.
