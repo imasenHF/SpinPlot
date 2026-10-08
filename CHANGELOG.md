@@ -1,3 +1,9 @@
+## 0.8.2
+
+- Constrain data-list grid children and wrap data tools in narrow sidebars.
+- 2D subplots show a read-only Current data row with full-name tooltip.
+- 2D summaries show dataset count, view mode and matrix dimensions.
+
 ## 0.8.1
 
 - All equal grid spans share main-axis frame dimensions, including mixed 1D/2D and g on/off.
