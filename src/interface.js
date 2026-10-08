@@ -12,7 +12,7 @@ export function organizeSubplot(card,sp,{axisInfo,frequency,onChange,onProcessin
  if(two('step'))two('step').parentElement.hidden=!stack;
  const modeField=field('mode').closest('.field'),offsetMode=field('offsetMode').closest('.field');plot.body.prepend(modeField);modeField.after(offsetMode);for(const row of [...plot.body.children])if(row.classList.contains('grid2')&&!row.children.length)row.remove();
  if(sp.twoD){const scale=field('offsetScale').closest('.field');two('step').parentElement.before(scale);for(const row of [...plot.body.children])if(row.classList.contains('grid2'))row.hidden=true;}
- field('gMin').closest('.grid3').classList.add('control-triple');
+ field('gMin').closest('.grid3').classList.add('control-triple');field('gLabel').closest('.grid2').classList.add('control-pair');
 
  move(field('labelMode'),legend.body);move(field('directLabelX'),legend.body);const direct=sp.labelMode==='direct'||sp.labelMode==='both';field('directLabelX').closest('.grid2').hidden=!direct;field('legendPosition').closest('details').hidden=sp.labelMode==='none'||sp.labelMode==='direct';
  if(sp.twoD){field('labelMode').closest('.field').querySelector('label').textContent='Stack trace labels';for(const option of field('labelMode').options){option.textContent=option.value==='none'?'None':option.value==='legend'?'Trace values':option.textContent;option.hidden=!['legend','none'].includes(option.value);}field('legendPosition').closest('details').hidden=true;field('directLabelX').closest('.grid2').hidden=true;legend.box.hidden=!stack;}
