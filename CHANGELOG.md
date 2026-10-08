@@ -1,5 +1,7 @@
 ## 0.6.0
 
+- Open appends incoming datasets in new subplots; explicit Clear all data action.
+
 - Integrate 2D ranges, Z/colorbar, palettes and projection exports into existing axes/style/layout/export controls.
 - Center titles over the main map; omit filename fallback.
 - Projection traces use the first palette color independently of the heatmap.
